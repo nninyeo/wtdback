@@ -1,0 +1,43 @@
+spring:
+  jpa:
+    generate-ddl: 'true'
+    defer-datasource-initialization: 'true'
+    hibernate:
+      ddl-auto: create
+    database-platform: org.hibernate.dialect.MariaDB53Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB53Dialect
+        format_sql: true
+        show_sql: true
+        use_sql_comments: true
+  datasource:
+    #driverClassName: com.mysql.cj.jdbc.Driver
+    driver-class-name: org.mariadb.jdbc.Driver
+    password: rktmqrl17L
+    username: duals
+    url: jdbc:mariadb://61.74.239.43:3306/wtddb?characterEncoding=UTF-8&serverTimezone=UTC
+  sql:
+    init:
+      mode: never
+      encoding: UTF-8
+  mustache:
+    servlet:
+      cache: 'false'
+  devtools:
+    livereload:
+      enabled: 'true'
+server:
+  servlet:
+    encoding:
+      force-response: 'true'
+  port: 18080
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+        SQL: DEBUG
