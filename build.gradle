@@ -21,6 +21,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor  'org.projectlombok:lombok'
 
+	// https://mvnrepository.com/artifact/com.google.code.geocoder-java/geocoder-java
+	implementation 'com.google.code.geocoder-java:geocoder-java:0.16'
+
 	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	// https://mvnrepository.com/artifact/com.google.code.gson/gson

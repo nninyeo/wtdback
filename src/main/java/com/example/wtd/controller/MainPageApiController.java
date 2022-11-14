@@ -213,6 +213,9 @@ public class MainPageApiController {
             String jobDetailData = mapper.writeValueAsString(voJobDepth.getDetail());
             String jobPosData= mapper.writeValueAsString(voJobDepth.getPosition());
             String jobDueTimeData= mapper.writeValueAsString(voJobDepth.getDue_time()); //null = 상시
+            if(voJobDepth.getDue_time() == null){
+                jobDueTimeData = "상시";
+            }
             String jobStatusData= mapper.writeValueAsString(voJobDepth.getStatus()); //draft: 지원마감 (active아니면 다 마감)
 
             //String으로 변환된 주소모음(jobAddrData)을 depth타고 올라가서 해당 vo에 매칭
@@ -221,10 +224,25 @@ public class MainPageApiController {
             DetailDataVO.TitleImgData titleImgData = gson.fromJson(jobImgData, DetailDataVO.TitleImgData.class);
             DetailDataVO.DetailData detailData = gson.fromJson(jobDetailData, DetailDataVO.DetailData.class);
 
+//            (addressData.getGeo_location() != null){
+            String location = "";
+            try {
+                location = addressData.getGeo_location().get("location").toString();
+            }catch (Exception e) {
+                System.out.println("위도경도값 null");
+//                location = "{lat=-1, lng=-1}";
+                continue;
+            }
 
-            String location = addressData.getGeo_location().get("location").toString();
+
             String dueTime = voJobDepth.getDue_time();
             String statusData = voJobDepth.getStatus();
+            if(voJobDepth.getStatus().contains("active")){
+                statusData = "모집중";
+            }else {
+                statusData = "마감";
+            }
+            
             String positionData = voJobDepth.getPosition();
 
 
@@ -237,9 +255,7 @@ public class MainPageApiController {
             System.out.println("마감일     >>>" + jobDueTimeData);
             System.out.println("지원가능여부>>>" + statusData);
             System.out.println("글제목     >>>" + positionData);
-
-//            List<String> detailText = (List<String>) voJobDepth.getDetail();
-
+            
 
 
             /** G. 매칭된 요소에서 필요한 요소들 List화 */
@@ -281,4 +297,43 @@ public class MainPageApiController {
 
         return jsonInfo;
     }//~
+
+//  https://developers.google.com/maps/documentation/geocoding/cloud-setup 차후 키 받아서 진행
+//    public static String findGeoPoint(String location) {
+//
+//        if (location == null){
+//            System.out.println("널됨1");
+//            return null;
+//        }
+//
+//
+//        // setAddress : 변환하려는 주소 (경기도 성남시 분당구 등)
+//        // setLanguate : 인코딩 설정
+//        GeocoderRequest geocoderRequest = new GeocoderRequestBuilder().setAddress(location).setLanguage("ko").getGeocoderRequest();
+//
+//        try {
+//            Geocoder geocoder = new Geocoder();
+//            GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
+//
+//            if (geocoderResponse.getStatus() == GeocoderStatus.OK & !geocoderResponse.getResults().isEmpty()) {
+//                GeocoderResult geocoderResult=geocoderResponse.getResults().iterator().next();
+//                LatLng latitudeLongitude = geocoderResult.getGeometry().getLocation();
+//
+//                String coords = "";
+////                coords =
+//                coords = latitudeLongitude.getLat().toString();//floatValue();
+//                System.out.println(coords);
+////                coords[1] = latitudeLongitude.getLng().toString();//floatValue();
+//
+//            return coords;
+//            }
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+//
+//        System.out.println("널됨2");
+//        return null;
+//    }
+
+
 }
